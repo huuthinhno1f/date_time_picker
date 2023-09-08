@@ -1,15 +1,15 @@
 library flutter_datetime_picker;
 
 import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
-import 'package:flutter_datetime_picker/src/datetime_picker_theme.dart';
 import 'package:flutter_datetime_picker/src/date_model.dart';
+import 'package:flutter_datetime_picker/src/datetime_picker_theme.dart';
 import 'package:flutter_datetime_picker/src/i18n_model.dart';
 
-export 'package:flutter_datetime_picker/src/datetime_picker_theme.dart';
 export 'package:flutter_datetime_picker/src/date_model.dart';
+export 'package:flutter_datetime_picker/src/datetime_picker_theme.dart';
 export 'package:flutter_datetime_picker/src/i18n_model.dart';
 
 typedef DateChangedCallback(DateTime time);
@@ -41,8 +41,7 @@ class DatePicker {
         onCancel: onCancel,
         locale: locale,
         theme: theme,
-        barrierLabel:
-            MaterialLocalizations.of(context).modalBarrierDismissLabel,
+        barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
         pickerModel: DatePickerModel(
           currentTime: currentTime,
           maxTime: maxTime,
@@ -76,8 +75,7 @@ class DatePicker {
         onCancel: onCancel,
         locale: locale,
         theme: theme,
-        barrierLabel:
-            MaterialLocalizations.of(context).modalBarrierDismissLabel,
+        barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
         pickerModel: TimePickerModel(
           currentTime: currentTime,
           locale: locale,
@@ -109,8 +107,7 @@ class DatePicker {
         onCancel: onCancel,
         locale: locale,
         theme: theme,
-        barrierLabel:
-            MaterialLocalizations.of(context).modalBarrierDismissLabel,
+        barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
         pickerModel: Time12hPickerModel(
           currentTime: currentTime,
           locale: locale,
@@ -143,8 +140,7 @@ class DatePicker {
         onCancel: onCancel,
         locale: locale,
         theme: theme,
-        barrierLabel:
-            MaterialLocalizations.of(context).modalBarrierDismissLabel,
+        barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
         pickerModel: DateTimePickerModel(
           currentTime: currentTime,
           minTime: minTime,
@@ -177,8 +173,7 @@ class DatePicker {
         onCancel: onCancel,
         locale: locale,
         theme: theme,
-        barrierLabel:
-            MaterialLocalizations.of(context).modalBarrierDismissLabel,
+        barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
         pickerModel: pickerModel,
       ),
     );
@@ -225,14 +220,13 @@ class _DatePickerRoute<T> extends PopupRoute<T> {
   @override
   AnimationController createAnimationController() {
     assert(_animationController == null);
-    _animationController =
-        BottomSheet.createAnimationController(navigator!.overlay!);
+    _animationController = BottomSheet.createAnimationController(navigator!.overlay!);
     return _animationController!;
   }
 
   @override
-  Widget buildPage(BuildContext context, Animation<double> animation,
-      Animation<double> secondaryAnimation) {
+  Widget buildPage(
+      BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation) {
     Widget bottomSheet = MediaQuery.removePadding(
       context: context,
       removeTop: true,
@@ -271,9 +265,7 @@ class _DatePickerComponent extends StatefulWidget {
 }
 
 class _DatePickerState extends State<_DatePickerComponent> {
-  late FixedExtentScrollController leftScrollCtrl,
-      middleScrollCtrl,
-      rightScrollCtrl;
+  late FixedExtentScrollController leftScrollCtrl, middleScrollCtrl, rightScrollCtrl;
 
   @override
   void initState() {
@@ -283,40 +275,39 @@ class _DatePickerState extends State<_DatePickerComponent> {
 
   void refreshScrollOffset() {
 //    print('refreshScrollOffset ${widget.pickerModel.currentRightIndex()}');
-    leftScrollCtrl = FixedExtentScrollController(
-        initialItem: widget.pickerModel.currentLeftIndex());
-    middleScrollCtrl = FixedExtentScrollController(
-        initialItem: widget.pickerModel.currentMiddleIndex());
-    rightScrollCtrl = FixedExtentScrollController(
-        initialItem: widget.pickerModel.currentRightIndex());
+    leftScrollCtrl =
+        FixedExtentScrollController(initialItem: widget.pickerModel.currentLeftIndex());
+    middleScrollCtrl =
+        FixedExtentScrollController(initialItem: widget.pickerModel.currentMiddleIndex());
+    rightScrollCtrl =
+        FixedExtentScrollController(initialItem: widget.pickerModel.currentRightIndex());
   }
 
   @override
   Widget build(BuildContext context) {
     DatePickerTheme theme = widget.route.theme;
-    return GestureDetector(
-      child: AnimatedBuilder(
-        animation: widget.route.animation!,
-        builder: (BuildContext context, Widget? child) {
-          final double bottomPadding = MediaQuery.of(context).padding.bottom;
-          return ClipRect(
-            child: CustomSingleChildLayout(
-              delegate: _BottomPickerLayout(
-                widget.route.animation!.value,
-                theme,
-                showTitleActions: widget.route.showTitleActions!,
-                bottomPadding: bottomPadding,
-              ),
-              child: GestureDetector(
-                child: Material(
-                  color: theme.backgroundColor,
-                  child: _renderPickerView(theme),
-                ),
+    return AnimatedBuilder(
+      animation: widget.route.animation!,
+      builder: (BuildContext context, Widget? child) {
+        final double bottomPadding = MediaQuery.of(context).padding.bottom;
+        return ClipRect(
+          child: CustomSingleChildLayout(
+            delegate: _BottomPickerLayout(
+              widget.route.animation!.value,
+              theme,
+              showTitleActions: widget.route.showTitleActions!,
+              bottomPadding: bottomPadding,
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+              child: Material(
+                color: theme.backgroundColor,
+                child: _renderPickerView(theme),
               ),
             ),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 
@@ -330,9 +321,10 @@ class _DatePickerState extends State<_DatePickerComponent> {
     Widget itemView = _renderItemView(theme);
     if (widget.route.showTitleActions == true) {
       return Column(
-        children: <Widget>[
+        children: [
           _renderTitleActionsView(theme),
           itemView,
+          _button(theme),
         ],
       );
     }
@@ -340,18 +332,18 @@ class _DatePickerState extends State<_DatePickerComponent> {
   }
 
   Widget _renderColumnView(
-    ValueKey key,
-    DatePickerTheme theme,
-    StringAtIndexCallBack stringAtIndexCB,
-    ScrollController scrollController,
-    int layoutProportion,
-    ValueChanged<int> selectedChangedWhenScrolling,
-    ValueChanged<int> selectedChangedWhenScrollEnd,
-  ) {
+      ValueKey key,
+      DatePickerTheme theme,
+      StringAtIndexCallBack stringAtIndexCB,
+      ScrollController scrollController,
+      int layoutProportion,
+      ValueChanged<int> selectedChangedWhenScrolling,
+      ValueChanged<int> selectedChangedWhenScrollEnd,
+      {bool capStartEdge = false,
+      bool capEndEdge = false}) {
     return Expanded(
       flex: layoutProportion,
       child: Container(
-        padding: EdgeInsets.all(8.0),
         height: theme.containerHeight,
         decoration: BoxDecoration(color: theme.backgroundColor),
         child: NotificationListener(
@@ -359,8 +351,7 @@ class _DatePickerState extends State<_DatePickerComponent> {
             if (notification.depth == 0 &&
                 notification is ScrollEndNotification &&
                 notification.metrics is FixedExtentMetrics) {
-              final FixedExtentMetrics metrics =
-                  notification.metrics as FixedExtentMetrics;
+              final FixedExtentMetrics metrics = notification.metrics as FixedExtentMetrics;
               final int currentItemIndex = metrics.itemIndex;
               selectedChangedWhenScrollEnd(currentItemIndex);
             }
@@ -371,6 +362,8 @@ class _DatePickerState extends State<_DatePickerComponent> {
             backgroundColor: theme.backgroundColor,
             scrollController: scrollController as FixedExtentScrollController,
             itemExtent: theme.itemHeight,
+            selectionOverlay: CupertinoPickerDefaultSelectionOverlay(
+                capStartEdge: capStartEdge, capEndEdge: capEndEdge),
             onSelectedItemChanged: (int index) {
               selectedChangedWhenScrolling(index);
             },
@@ -399,26 +392,27 @@ class _DatePickerState extends State<_DatePickerComponent> {
   Widget _renderItemView(DatePickerTheme theme) {
     return Container(
       color: theme.backgroundColor,
+      padding: EdgeInsets.symmetric(horizontal: 24),
       child: Directionality(
         textDirection: TextDirection.ltr,
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
+          children: [
             Container(
-              child: widget.pickerModel.layoutProportions()[0] > 0
+              child: widget.pickerModel.layoutProportions()[2] > 0
                   ? _renderColumnView(
-                      ValueKey(widget.pickerModel.currentLeftIndex()),
+                      ValueKey(widget.pickerModel.currentMiddleIndex() * 100 +
+                          widget.pickerModel.currentLeftIndex()),
                       theme,
-                      widget.pickerModel.leftStringAtIndex,
-                      leftScrollCtrl,
-                      widget.pickerModel.layoutProportions()[0], (index) {
-                      widget.pickerModel.setLeftIndex(index);
+                      widget.pickerModel.rightStringAtIndex,
+                      rightScrollCtrl,
+                      widget.pickerModel.layoutProportions()[2], (index) {
+                      widget.pickerModel.setRightIndex(index);
                     }, (index) {
                       setState(() {
                         refreshScrollOffset();
                         _notifyDateChanged();
                       });
-                    })
+                    }, capStartEdge: true)
                   : null,
             ),
             Text(
@@ -447,21 +441,20 @@ class _DatePickerState extends State<_DatePickerComponent> {
               style: theme.itemStyle,
             ),
             Container(
-              child: widget.pickerModel.layoutProportions()[2] > 0
+              child: widget.pickerModel.layoutProportions()[0] > 0
                   ? _renderColumnView(
-                      ValueKey(widget.pickerModel.currentMiddleIndex() * 100 +
-                          widget.pickerModel.currentLeftIndex()),
+                      ValueKey(widget.pickerModel.currentLeftIndex()),
                       theme,
-                      widget.pickerModel.rightStringAtIndex,
-                      rightScrollCtrl,
-                      widget.pickerModel.layoutProportions()[2], (index) {
-                      widget.pickerModel.setRightIndex(index);
+                      widget.pickerModel.leftStringAtIndex,
+                      leftScrollCtrl,
+                      widget.pickerModel.layoutProportions()[0], (index) {
+                      widget.pickerModel.setLeftIndex(index);
                     }, (index) {
                       setState(() {
                         refreshScrollOffset();
                         _notifyDateChanged();
                       });
-                    })
+                    }, capEndEdge: true)
                   : null,
             ),
           ],
@@ -470,64 +463,57 @@ class _DatePickerState extends State<_DatePickerComponent> {
     );
   }
 
-  // Title View
   Widget _renderTitleActionsView(DatePickerTheme theme) {
-    final done = _localeDone();
-    final cancel = _localeCancel();
-
-    return Container(
-      height: theme.titleHeight,
-      decoration: BoxDecoration(
-        color: theme.headerColor ?? theme.backgroundColor,
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: <Widget>[
-          Container(
-            height: theme.titleHeight,
-            child: CupertinoButton(
-              pressedOpacity: 0.3,
-              padding: EdgeInsetsDirectional.only(start: 16, top: 0),
-              child: Text(
-                '$cancel',
-                style: theme.cancelStyle,
-              ),
-              onPressed: () {
-                Navigator.pop(context);
-                if (widget.route.onCancel != null) {
-                  widget.route.onCancel!();
-                }
-              },
-            ),
+    return Padding(
+      padding: EdgeInsets.all(8),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          GestureDetector(
+            onTap: () {
+              Navigator.pop(context);
+              if (widget.route.onCancel != null) {
+                widget.route.onCancel!();
+              }
+            },
+            child: theme.iconCancel ??
+                Icon(
+                  Icons.cancel,
+                  size: 22,
+                  color: Color(0xFF666666),
+                ),
           ),
-          Container(
-            height: theme.titleHeight,
-            child: CupertinoButton(
-              pressedOpacity: 0.3,
-              padding: EdgeInsetsDirectional.only(end: 16, top: 0),
-              child: Text(
-                '$done',
-                style: theme.doneStyle,
-              ),
-              onPressed: () {
-                Navigator.pop(context, widget.pickerModel.finalTime());
-                if (widget.route.onConfirm != null) {
-                  widget.route.onConfirm!(widget.pickerModel.finalTime()!);
-                }
-              },
-            ),
-          ),
+          Center(
+            child: Text(theme.title ?? '', style: theme.titleStyle),
+          )
         ],
       ),
     );
   }
 
-  String _localeDone() {
-    return i18nObjInLocale(widget.locale)['done'] as String;
-  }
-
-  String _localeCancel() {
-    return i18nObjInLocale(widget.locale)['cancel'] as String;
+  Widget _button(DatePickerTheme theme) {
+    return theme.showButton
+        ? GestureDetector(
+            onTap: () {
+              Navigator.pop(context, widget.pickerModel.finalTime());
+              if (widget.route.onConfirm != null) {
+                widget.route.onConfirm!(widget.pickerModel.finalTime()!);
+              }
+            },
+            child: Container(
+              padding: EdgeInsets.symmetric(vertical: 16),
+              margin: EdgeInsets.all(16)
+                  .copyWith(bottom: 16 + MediaQuery.of(context).viewPadding.bottom),
+              decoration: BoxDecoration(
+                  color: theme.buttonColor,
+                  border: Border.all(color: theme.buttonColorBorder ?? Colors.white),
+                  borderRadius: BorderRadius.circular(99)),
+              child: Center(
+                child: Text(theme.buttonTitle ?? 'Xác nhận', style: theme.buttonTitleStyle),
+              ),
+            ),
+          )
+        : SizedBox();
   }
 }
 
@@ -557,7 +543,7 @@ class _BottomPickerLayout extends SingleChildLayoutDelegate {
       minWidth: constraints.maxWidth,
       maxWidth: constraints.maxWidth,
       minHeight: 0.0,
-      maxHeight: maxHeight + bottomPadding,
+      // maxHeight: 600,
     );
   }
 
