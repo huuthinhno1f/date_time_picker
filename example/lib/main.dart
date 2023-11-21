@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart' as picker;
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 
-void main() => runApp(new MyApp());
+void main() => runApp(MyApp());
 
 class CustomPicker extends CommonPickerModel {
   String digits(int value, int length) {
@@ -97,7 +98,7 @@ class HomePage extends StatelessWidget {
                       showTitleActions: true,
                       minTime: DateTime(2018, 3, 5),
                       maxTime: DateTime(2019, 6, 7),
-                      theme: DatePickerTheme(
+                      theme: picker.DatePickerTheme(
                         headerColor: Colors.orange,
                         title: 'aaa',
                         containerHeight: 200,

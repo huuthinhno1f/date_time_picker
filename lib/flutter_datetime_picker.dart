@@ -3,7 +3,7 @@ library flutter_datetime_picker;
 import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' as material;
 import 'package:flutter_datetime_picker/src/date_model.dart';
 import 'package:flutter_datetime_picker/src/datetime_picker_theme.dart';
 import 'package:flutter_datetime_picker/src/i18n_model.dart';
@@ -17,18 +17,15 @@ typedef DateCancelledCallback();
 typedef String? StringAtIndexCallBack(int index);
 
 class DatePicker {
-  ///
-  /// Display date picker bottom sheet.
-  ///
   static Future<DateTime?> showDatePicker(
     BuildContext context, {
-    bool showTitleActions: true,
+    bool showTitleActions = true,
     DateTime? minTime,
     DateTime? maxTime,
     DateChangedCallback? onChanged,
     DateChangedCallback? onConfirm,
     DateCancelledCallback? onCancel,
-    locale: LocaleType.en,
+    locale = LocaleType.en,
     DateTime? currentTime,
     DatePickerTheme? theme,
   }) async {
@@ -41,7 +38,7 @@ class DatePicker {
         onCancel: onCancel,
         locale: locale,
         theme: theme,
-        barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
+        barrierLabel: material.MaterialLocalizations.of(context).modalBarrierDismissLabel,
         pickerModel: DatePickerModel(
           currentTime: currentTime,
           maxTime: maxTime,
@@ -52,17 +49,14 @@ class DatePicker {
     );
   }
 
-  ///
-  /// Display time picker bottom sheet.
-  ///
   static Future<DateTime?> showTimePicker(
     BuildContext context, {
-    bool showTitleActions: true,
-    bool showSecondsColumn: true,
+    bool showTitleActions = true,
+    bool showSecondsColumn = true,
     DateChangedCallback? onChanged,
     DateChangedCallback? onConfirm,
     DateCancelledCallback? onCancel,
-    locale: LocaleType.en,
+    locale = LocaleType.en,
     DateTime? currentTime,
     DatePickerTheme? theme,
   }) async {
@@ -75,7 +69,7 @@ class DatePicker {
         onCancel: onCancel,
         locale: locale,
         theme: theme,
-        barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
+        barrierLabel: material.MaterialLocalizations.of(context).modalBarrierDismissLabel,
         pickerModel: TimePickerModel(
           currentTime: currentTime,
           locale: locale,
@@ -85,16 +79,13 @@ class DatePicker {
     );
   }
 
-  ///
-  /// Display time picker bottom sheet with AM/PM.
-  ///
   static Future<DateTime?> showTime12hPicker(
     BuildContext context, {
-    bool showTitleActions: true,
+    bool showTitleActions = true,
     DateChangedCallback? onChanged,
     DateChangedCallback? onConfirm,
     DateCancelledCallback? onCancel,
-    locale: LocaleType.en,
+    locale = LocaleType.en,
     DateTime? currentTime,
     DatePickerTheme? theme,
   }) async {
@@ -107,7 +98,7 @@ class DatePicker {
         onCancel: onCancel,
         locale: locale,
         theme: theme,
-        barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
+        barrierLabel: material.MaterialLocalizations.of(context).modalBarrierDismissLabel,
         pickerModel: Time12hPickerModel(
           currentTime: currentTime,
           locale: locale,
@@ -116,18 +107,15 @@ class DatePicker {
     );
   }
 
-  ///
-  /// Display date&time picker bottom sheet.
-  ///
   static Future<DateTime?> showDateTimePicker(
     BuildContext context, {
-    bool showTitleActions: true,
+    bool showTitleActions = true,
     DateTime? minTime,
     DateTime? maxTime,
     DateChangedCallback? onChanged,
     DateChangedCallback? onConfirm,
     DateCancelledCallback? onCancel,
-    locale: LocaleType.en,
+    locale = LocaleType.en,
     DateTime? currentTime,
     DatePickerTheme? theme,
   }) async {
@@ -140,7 +128,7 @@ class DatePicker {
         onCancel: onCancel,
         locale: locale,
         theme: theme,
-        barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
+        barrierLabel: material.MaterialLocalizations.of(context).modalBarrierDismissLabel,
         pickerModel: DateTimePickerModel(
           currentTime: currentTime,
           minTime: minTime,
@@ -151,16 +139,13 @@ class DatePicker {
     );
   }
 
-  ///
-  /// Display date picker bottom sheet witch custom picker model.
-  ///
   static Future<DateTime?> showPicker(
     BuildContext context, {
-    bool showTitleActions: true,
+    bool showTitleActions = true,
     DateChangedCallback? onChanged,
     DateChangedCallback? onConfirm,
     DateCancelledCallback? onCancel,
-    locale: LocaleType.en,
+    locale = LocaleType.en,
     BasePickerModel? pickerModel,
     DatePickerTheme? theme,
   }) async {
@@ -173,7 +158,7 @@ class DatePicker {
         onCancel: onCancel,
         locale: locale,
         theme: theme,
-        barrierLabel: MaterialLocalizations.of(context).modalBarrierDismissLabel,
+        barrierLabel: material.MaterialLocalizations.of(context).modalBarrierDismissLabel,
         pickerModel: pickerModel,
       ),
     );
@@ -213,14 +198,14 @@ class _DatePickerRoute<T> extends PopupRoute<T> {
   final String? barrierLabel;
 
   @override
-  Color get barrierColor => Colors.black54;
+  Color get barrierColor => material.Colors.black54;
 
   AnimationController? _animationController;
 
   @override
   AnimationController createAnimationController() {
     assert(_animationController == null);
-    _animationController = BottomSheet.createAnimationController(navigator!.overlay!);
+    _animationController = material.BottomSheet.createAnimationController(navigator!.overlay!);
     return _animationController!;
   }
 
@@ -274,7 +259,6 @@ class _DatePickerState extends State<_DatePickerComponent> {
   }
 
   void refreshScrollOffset() {
-//    print('refreshScrollOffset ${widget.pickerModel.currentRightIndex()}');
     leftScrollCtrl =
         FixedExtentScrollController(initialItem: widget.pickerModel.currentLeftIndex());
     middleScrollCtrl =
@@ -300,7 +284,7 @@ class _DatePickerState extends State<_DatePickerComponent> {
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-              child: Material(
+              child: material.Material(
                 color: theme.backgroundColor,
                 child: _renderPickerView(theme),
               ),
@@ -478,7 +462,7 @@ class _DatePickerState extends State<_DatePickerComponent> {
             },
             child: theme.iconCancel ??
                 Icon(
-                  Icons.cancel,
+                  material.Icons.cancel,
                   size: 22,
                   color: Color(0xFF666666),
                 ),
@@ -506,7 +490,7 @@ class _DatePickerState extends State<_DatePickerComponent> {
                   .copyWith(bottom: 16 + MediaQuery.of(context).viewPadding.bottom),
               decoration: BoxDecoration(
                   color: theme.buttonColor,
-                  border: Border.all(color: theme.buttonColorBorder ?? Colors.white),
+                  border: Border.all(color: theme.buttonColorBorder ?? material.Colors.white),
                   borderRadius: BorderRadius.circular(99)),
               child: Center(
                 child: Text(theme.buttonTitle ?? 'Xác nhận', style: theme.buttonTitleStyle),
@@ -521,30 +505,24 @@ class _BottomPickerLayout extends SingleChildLayoutDelegate {
   _BottomPickerLayout(
     this.progress,
     this.theme, {
-    this.itemCount,
     this.showTitleActions,
     this.bottomPadding = 0,
   });
 
   final double progress;
-  final int? itemCount;
   final bool? showTitleActions;
   final DatePickerTheme theme;
   final double bottomPadding;
 
   @override
   BoxConstraints getConstraintsForChild(BoxConstraints constraints) {
-    double maxHeight = theme.containerHeight;
+    double _maxHeight = theme.containerHeight;
     if (showTitleActions == true) {
-      maxHeight += theme.titleHeight;
+      _maxHeight += theme.titleHeight;
     }
 
     return BoxConstraints(
-      minWidth: constraints.maxWidth,
-      maxWidth: constraints.maxWidth,
-      minHeight: 0.0,
-      // maxHeight: 600,
-    );
+        minWidth: constraints.maxWidth, maxWidth: constraints.maxWidth, minHeight: 0.0);
   }
 
   @override
